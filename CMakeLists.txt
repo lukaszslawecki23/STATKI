@@ -16,6 +16,10 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(SDL3)
 
-add_executable(${PROJECT_NAME} src/main.cpp)
+add_executable(${PROJECT_NAME} 
+src/main.cpp
+src/board.cpp
+src/board.hpp
+)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE SDL3::SDL3)
