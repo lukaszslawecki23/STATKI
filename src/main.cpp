@@ -7,7 +7,8 @@ struct AppState {
     SDL_Window* window = nullptr;
     SDL_Renderer* renderer = nullptr;
 
-    Board playerBoard{190, 90};
+    Board playerBoard{300, 330, false};
+    Board enemyBoard{1102, 330, true};
 };
 
 SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
@@ -22,6 +23,8 @@ SDL_AppResult SDL_AppInit(void** appstate, int argc, char* argv[]) {
         return SDL_APP_FAILURE;
     }
 
+    state->enemyBoard.randomShips();
+
     *appstate = state;
     return SDL_APP_CONTINUE;
 }
@@ -35,7 +38,7 @@ SDL_AppResult SDL_AppEvent(void* appstate, SDL_Event* event) {
 
     if (event->type == SDL_EVENT_MOUSE_BUTTON_DOWN && event->button.button == SDL_BUTTON_LEFT)
     {
-        state->playerBoard.handleClick(event->button.x, event->button.y);
+        state->enemyBoard.handleClick(event->button.x, event->button.y);
     }
     return SDL_APP_CONTINUE;
 }
@@ -46,7 +49,8 @@ SDL_AppResult SDL_AppIterate(void* appstate) {
     SDL_SetRenderDrawColor(state->renderer, 25, 130, 200, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(state->renderer);
 
-    state->playerBoard.render(state->renderer);
+    state->playerBoard.render(state->renderer, false);
+    state->enemyBoard.render(state->renderer, true);
 
     SDL_RenderPresent(state->renderer);
     return SDL_APP_CONTINUE;
